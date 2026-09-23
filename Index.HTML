@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<title>Azzam — Web Developer</title>
+<style>
+  :root{
+    --bg:#0a0a0f; --ink:#f4f4f6; --muted:#8a8a96; --dim:#4a4a55;
+    --gold:#ffd60a; --green:#30d158;
+    --line:rgba(255,255,255,.08); --glass:rgba(255,255,255,.04);
+    --r:22px; --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.6;
+    min-height:100vh; overflow-x:hidden; -webkit-font-smoothing:antialiased}
+  .bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none}
+  .bg::before{content:''; position:absolute; inset:-50%;
+    background:radial-gradient(circle at 20% 20%, #7c3aed 0%, transparent 40%),
+      radial-gradient(circle at 80% 30%, #06b6d4 0%, transparent 40%),
+      radial-gradient(circle at 50% 80%, #ec4899 0%, transparent 40%);
+    filter:blur(120px); opacity:.35; animation:drift 28s ease-in-out infinite alternate}
+  @keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-4%,4%) scale(1.15)}}
+  .noise{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.05;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode:overlay}
+  body::after{content:''; position:fixed; inset:0; pointer-events:none; z-index:1;
+    background:radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,.5) 100%)}
+  .wrap{position:relative; z-index:2; max-width:1000px; margin:0 auto; padding:0 22px}
+  nav{position:fixed; top:0; left:0; right:0; z-index:100; padding:18px 22px;
+    display:flex; justify-content:space-between; align-items:center;
+    backdrop-filter:blur(20px); background:linear-gradient(180deg, rgba(10,10,15,.7), rgba(10,10,15,.2));
+    border-bottom:1px solid transparent; transition:border-color .4s, background .4s}
+  nav.scrolled{border-bottom-color:var(--line); background:rgba(10,10,15,.85)}
+  .logo{font-size:13px; font-weight:800; letter-spacing:.3em; text-transform:uppercase}
+  .logo b{color:var(--gold)}
+  nav ul{list-style:none; display:flex; gap:26px}
+  nav a{color:var(--muted); text-decoration:none; font-size:11px; font-weight:700;
+    letter-spacing:.2em; text-transform:uppercase; transition:color .3s}
+  nav a:hover{color:var(--ink)}
+  @media (max-width:600px){nav ul{gap:14px} nav a{font-size:10px}}
+  .hero{min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:120px 0 60px}
+  .eyebrow{display:inline-flex; align-items:center; gap:10px;
+    font-size:10px; letter-spacing:.4em; text-transform:uppercase; color:var(--muted);
+    font-weight:800; margin-bottom:24px; animation:rise .9s var(--ease) both}
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 12px var(--green); animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  h1{font-size:clamp(56px, 14vw, 140px); font-weight:800; letter-spacing:-.05em;
+    line-height:.92; margin-bottom:26px;
+    background:linear-gradient(120deg, #fff 0%, #fff 30%, var(--gold) 50%, #fff 70%, #fff 100%);
+    background-size:200% auto; -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:rise 1s var(--ease) both .2s, shine 6s linear infinite}
+  @keyframes shine{to{background-position:200% center}}
+  @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+  .tagline{font-size:clamp(16px, 2.2vw, 20px); color:var(--muted); max-width:560px;
+    margin-bottom:40px; line-height:1.55; animation:rise 1s var(--ease) both .35s}
+  .tagline b{color:var(--ink); font-weight:600}
+  .tagline .hl{color:var(--gold); font-weight:600}
+  .cta{display:flex; gap:14px; flex-wrap:wrap; animation:rise 1s var(--ease) both .5s}
+  .btn{display:inline-flex; align-items:center; gap:10px;
+    padding:16px 30px; border-radius:100px; border:1px solid var(--line);
+    background:var(--glass); backdrop-filter:blur(14px);
+    color:var(--ink); text-decoration:none; font-size:12px; font-weight:800;
+    letter-spacing:.22em; text-transform:uppercase; transition:all .4s var(--ease)}
+  .btn:hover{transform:translateY(-3px); border-color:rgba(255,255,255,.3)}
+  .btn:active{transform:scale(.96)}
+  .btn.primary{background:linear-gradient(135deg, var(--gold), #ff9f0a); color:#111; border:none;
+    box-shadow:0 12px 40px -12px var(--gold)}
+  .btn.discord{background:linear-gradient(135deg, #5865F2, #7289da); color:#fff; border:none;
+    box-shadow:0 12px 40px -12px #5865F2; animation:glow 3s ease-in-out infinite}
+  @keyframes glow{0%,100%{box-shadow:0 12px 40px -12px #5865F2}50%{box-shadow:0 20px 60px -12px #7289da}}
+  .marquee{border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:26px 0; overflow:hidden; white-space:nowrap; margin:60px 0}
+  .marquee-track{display:inline-block; animation:scroll 30s linear infinite}
+  .marquee span{font-size:clamp(20px, 4vw, 40px); font-weight:800; letter-spacing:-.02em; margin:0 28px; opacity:.5}
+  .marquee span:nth-child(odd){color:var(--gold); opacity:.9}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  section{padding:80px 0}
+  .sec-head{display:flex; align-items:baseline; gap:20px; margin-bottom:44px}
+  .sec-num{font-size:13px; font-weight:800; letter-spacing:.4em; color:var(--gold)}
+  .sec-head h2{font-size:clamp(30px, 6vw, 52px); font-weight:800; letter-spacing:-.03em}
+  .sec-head::after{content:''; flex:1; height:1px; background:var(--line); margin-left:10px}
+  .reveal{opacity:0; transform:translateY(40px); transition:opacity .9s var(--ease), transform .9s var(--ease)}
+  .reveal.in{opacity:1; transform:none}
+  .card{background:var(--glass); backdrop-filter:blur(20px);
+    border:1px solid var(--line); border-radius:var(--r); padding:28px;
+    transition:all .5s var(--ease)}
+  .card:hover{transform:translateY(-6px); border-color:rgba(255,255,255,.18)}
+  .about-text{font-size:17px; color:var(--muted); line-height:1.7; max-width:680px}
+  .about-text b{color:var(--ink)}
+  .about-text .hl{color:var(--gold); font-weight:600}
+  .projects-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px}
+  .proj{padding:0; overflow:hidden; display:flex; flex-direction:column}
+  .proj-thumb{height:180px; background:linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    display:grid; place-items:center; font-size:60px}
+  .proj-body{padding:24px; flex:1; display:flex; flex-direction:column}
+  .proj-tag{display:inline-block; font-size:9px; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--gold); font-weight:800; margin-bottom:10px}
+  .proj h3{font-size:22px; font-weight:800; margin-bottom:10px; letter-spacing:-.02em}
+  .proj p{font-size:14px; color:var(--muted); margin-bottom:18px; flex:1; line-height:1.6}
+  .proj-link{display:inline-flex; align-items:center; gap:8px; color:var(--gold);
+    text-decoration:none; font-size:11px; font-weight:800; letter-spacing:.24em;
+    text-transform:uppercase; transition:gap .3s}
+  .proj-link:hover{gap:14px}
+  .proj.soon{opacity:.55; pointer-events:none}
+  .contact-card{text-align:center; padding:60px 30px;
+    background:linear-gradient(135deg, rgba(124,58,237,.15), rgba(6,182,212,.1));
+    border:1px solid rgba(124,58,237,.4)}
+  .contact-card h2{font-size:clamp(28px, 6vw, 48px); font-weight:800; letter-spacing:-.03em; margin-bottom:16px}
+  .contact-card p{color:var(--muted); max-width:480px; margin:0 auto 32px; font-size:16px}
+  footer{padding:50px 0 40px; border-top:1px solid var(--line); margin-top:60px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px;
+    font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); font-weight:700}
+  footer a{color:var(--muted); text-decoration:none}
+  footer a:hover{color:var(--gold)}
+  .loader{position:fixed; inset:0; background:var(--bg); z-index:99999;
+    display:grid; place-items:center; transition:opacity .6s, visibility .6s}
+  .loader.gone{opacity:0; visibility:hidden}
+  .loader-mark{font-size:52px; font-weight:800; letter-spacing:-.05em;
+    background:linear-gradient(120deg, #fff, var(--gold), #fff);
+    background-size:200% auto; -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; animation:shine 1.5s linear infinite}
+  @media (max-width:600px){section{padding:60px 0} .card{padding:22px}}
+</style>
+</head>
+<body>
+<div class="loader" id="loader"><div class="loader-mark">Azzam.</div></div>
+<div class="bg"></div>
+<div class="noise"></div>
+<nav id="nav">
+  <div class="logo">Azzam<b>.</b></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow"><span class="dot"></span> Available · Building on the web</div>
+    <h1>Hello.</h1>
+    <p class="tagline">I'm <b>Azzam</b> — a web developer building practical software.
+      <span class="hl">Don't just learn technology — build with it.</span></p>
+    <div class="cta">
+      <a class="btn discord" href="https://discord.gg/d8V7qrsq2" target="_blank" rel="noopener">💬 Join Discord</a>
+      <a class="btn primary" href="https://azzamx48.github.io/pyra/" target="_blank" rel="noopener">🐍 Try Pyra</a>
+    </div>
+  </header>
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>BUILD</span><span>·</span><span>BREAK</span><span>·</span><span>LEARN</span><span>·</span><span>IMPROVE</span><span>·</span><span>REPEAT</span><span>·</span>
+      <span>BUILD</span><span>·</span><span>BREAK</span><span>·</span><span>LEARN</span><span>·</span><span>IMPROVE</span><span>·</span><span>REPEAT</span><span>·</span>
+    </div>
+  </div>
+  <section id="about" class="reveal">
+    <div class="sec-head"><span class="sec-num">01</span><h2>About</h2></div>
+    <div class="card">
+      <p class="about-text">I'm a developer focused on <b>Web Development</b>, with growing experience in <b>AI</b>, <b>Cybersecurity</b>, and <b>Programming</b>.<br><br>
+      I learn by building — turning ideas into working projects, breaking them, fixing them, improving them. Every project is a chance to <span class="hl">learn something new</span>.</p>
+    </div>
+  </section>
+  <section id="projects" class="reveal">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Projects</h2></div>
+    <div class="projects-grid">
+      <article class="card proj">
+        <div class="proj-thumb">🐍</div>
+        <div class="proj-body">
+          <span class="proj-tag">Featured · Learning Platform</span>
+          <h3>Pyra</h3>
+          <p>An interactive Python learning app — 101 lessons across 12 phases, with quizzes, XP, achievements, and daily streaks.</p>
+          <a class="proj-link" href="https://azzamx48.github.io/pyra/" target="_blank" rel="noopener">Pyra link here →</a>
+        </div>
+      </article>
+      <article class="card proj soon">
+        <div class="proj-thumb">✨</div>
+        <div class="proj-body">
+          <span class="proj-tag">Coming Soon</span>
+          <h3>Next Project</h3>
+          <p>Something new is always being built. Join the Discord to see what's next.</p>
+          <span class="proj-link">In progress…</span>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section id="contact" class="reveal">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Contact</h2></div>
+    <div class="card contact-card">
+      <h2>Let's talk.</h2>
+      <p>Questions, ideas, or just want to hang out with other builders? Join the Discord.</p>
+      <a class="btn discord" href="https://discord.gg/d8V7qrsq2" target="_blank" rel="noopener">💬 Join the Discord</a>
+    </div>
+  </section>
+  <footer>
+    <span>© <span id="year"></span> Azzam — Built by hand</span>
+    <span><a href="https://github.com/azzamx48" target="_blank" rel="noopener">GitHub</a> · <a href="https://discord.gg/d8V7qrsq2" target="_blank" rel="noopener">Discord</a></span>
+  </footer>
+</div>
+<script>
+  window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('gone'), 400));
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
+  const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+                                   </html>
